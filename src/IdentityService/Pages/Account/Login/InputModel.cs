@@ -5,7 +5,7 @@ namespace IdentityService.Pages.Account.Login;
 public class InputModel
 {
     [Required]
-    public string? Username { get; set; }
+    public string? UserName { get; set; }
     [Required]
     public string? Password { get; set; }
     public bool RememberLogin { get; set; }
