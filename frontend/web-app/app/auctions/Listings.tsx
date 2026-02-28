@@ -1,6 +1,6 @@
 'use client';
 
-import { getData } from "../actions/AuctionActions";
+import { getData } from "../actions/auctionActions";
 import AppPagination from "../components/AppPagination";
 import { Auction, PageResult } from "../types";
 import AuctionCard from "./AuctionCard";
@@ -9,7 +9,7 @@ import Filters from "./Filters";
 import { useParamsStore } from "@/hooks/useParamsStore";
 import { useShallow } from "zustand/shallow";
 import qs from 'query-string'
-import EmtyFilter from "../components/EmtyFilter";
+import EmptyFilter from "../components/EmptyFilter";
 
 export default function Listings() {
     const [data, setData] = useState<PageResult<Auction>>();
@@ -39,7 +39,7 @@ export default function Listings() {
         <>
             <Filters />
             {
-                data.totalCount == 0 ? <EmtyFilter showReset /> : (
+                data.totalCount == 0 ? <EmptyFilter showReset /> : (
                     <>
                         <div className="grid grid-cols-4 gap-4">
                             {data && data.results.map((auction: Auction) => (

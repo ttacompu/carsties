@@ -1,16 +1,20 @@
+'use client'
 import { useParamsStore } from "@/hooks/useParamsStore";
 import Heading from "./Heading";
 import { Button } from "flowbite-react";
+import { signIn } from "next-auth/react";
 
 type Props = {
   title?: string;
   subTitle?: string;
-  showReset?: boolean
+  showReset?: boolean;
+  showLogin?: boolean;
+  callbackUrl?: string;
 }
-export default function EmtyFilter({
+export default function EmptyFilter({
   title = 'No matches for this filter',
   subTitle = 'Try changin the filter or search term',
-  showReset }: Props) {
+  showReset, showLogin, callbackUrl }: Props) {
 
   const reset = useParamsStore(state => state.reset);
 
@@ -19,6 +23,7 @@ export default function EmtyFilter({
       <Heading title={title} subTitle={subTitle} center />
       <div className="mt-4">
         {showReset && (<Button outline onClick={reset}>Remove filters</Button>)}
+        {showLogin && (<Button outline onClick={() => signIn('id-server', { callbackUrl })}>Login</Button>)}
       </div>
     </div>
   )
