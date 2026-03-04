@@ -2,12 +2,12 @@
 
 
 import { Auction } from "@/app/types";
-import {Table, TableBody, TableCell, TableRow} from "flowbite-react";
+import { Table, TableBody, TableCell, TableRow } from "flowbite-react";
 
 type Props = {
     auction: Auction
 }
-export default function DetailedSpecs({auction}: Props) {
+export default function DetailedSpecs({ auction }: Props) {
     return (
         <Table striped={true}>
             <TableBody className="divide-y">
@@ -51,6 +51,16 @@ export default function DetailedSpecs({auction}: Props) {
                         {auction.mileage}
                     </TableCell>
                 </TableRow>
+
+                <TableRow className="bg-white dark:border-gray-700 dark:bg-gray-800">
+                    <TableCell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                        Image Url
+                    </TableCell>
+                    <TableCell>
+                        {auction.imageUrl}
+                    </TableCell>
+                </TableRow>
+
                 <TableRow className="bg-white dark:border-gray-700 dark:bg-gray-800">
                     <TableCell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                         Has reserve price?

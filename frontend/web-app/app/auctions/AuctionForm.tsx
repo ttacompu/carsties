@@ -47,8 +47,8 @@ export default function AuctionForm({ auction }: Props) {
 
     useEffect(() => {
         if (auction) {
-            const { make, model, color, mileage, year } = auction;
-            reset({ make, model, color, mileage, year });
+            const { make, model, color, mileage, year, imageUrl } = auction;
+            reset({ make, model, color, mileage, year, imageUrl });
         }
         setFocus('make');
     }, [setFocus, auction, reset])
@@ -61,20 +61,20 @@ export default function AuctionForm({ auction }: Props) {
                 rules={{ required: 'Model is required' }} />
             <Input name='color' label='Color' control={control}
                 rules={{ required: 'Color is required' }} />
+            <Input name='imageUrl' label='Image URL' control={control}
+                rules={{ required: 'Image Url is required' }} />
 
             <div className='grid grid-cols-2 gap-3'>
                 <Input name='year' label='Year' type='number' control={control}
                     rules={{ required: 'Year is required' }} />
                 <Input name='mileage' label='Mileage' control={control}
                     rules={{ required: 'Milage is required' }} />
+
             </div>
 
             {
                 pathname === '/auctions/create' &&
                 <>
-                    <Input name='imageUrl' label='Image URL' control={control}
-                        rules={{ required: 'Image Url is required' }} />
-
                     <div className='grid grid-cols-2 gap-3'>
                         <Input name='reservePrice' label='Reserve Price (enter 0 if no reserve)' type='number' control={control}
                             rules={{ required: 'Reserve price is required' }} />
