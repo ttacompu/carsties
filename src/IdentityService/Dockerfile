@@ -9,13 +9,14 @@ COPY src/BiddingService/BiddingService.csproj src/BiddingService/BiddingService.
 COPY src/Contracts/Contracts.csproj src/Contracts/Contracts.csproj
 COPY src/IdentityService/IdentityService.csproj src/IdentityService/IdentityService.csproj
 
-RUN dotnet restore ./src/GatewayService/GatewayService.csproj
+
+RUN dotnet restore ./src/IdentityService/IdentityService.csproj
 
 COPY . .
-RUN dotnet publish ./src/GatewayService/GatewayService.csproj -c Release -o /app/publish
+RUN dotnet publish ./src/IdentityService/IdentityService.csproj -c Release -o /app/publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 WORKDIR /app
 EXPOSE 80
 COPY --from=build /app/publish .
-ENTRYPOINT [ "dotnet" , "GatewayService.dll" ]
+ENTRYPOINT [ "dotnet" , "IdentityService.dll" ]
