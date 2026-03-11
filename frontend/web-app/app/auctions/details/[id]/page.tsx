@@ -6,6 +6,7 @@ import DetailedSpec from "./DetailedSpec";
 import EditButton from "./EditButton";
 import { getCurrentUser } from "@/app/actions/authActions";
 import DeleteButton from "./DeleteButton";
+import BidList from "./BidList";
 
 export default async function Details({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
@@ -37,7 +38,7 @@ export default async function Details({ params }: { params: Promise<{ id: string
                     <CarImage imageUrl={data.imageUrl} />
                 </div>
 
-                <div className="border-2 rounded-lg p-2 bg-gray-200"><Heading title="Bids" /></div>
+                <BidList user={user} auction={data}/>
             </div>
             <div className="mt-3 grid grid-cols-1 rounded-lg">
                 <DetailedSpec auction={data} />

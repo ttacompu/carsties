@@ -2,36 +2,36 @@ import { auth } from "@/auth";
 
 const baseUrl = 'http://localhost:6001/'
 
-async function get(url: string, headers? : Headers) {
+async function get(url: string, headers?: Headers) {
     const requestOptions = {
         method: 'GET',
-        headers : headers ? headers : undefined 
+        headers: headers ? headers : undefined
     }
     const response = await fetch(baseUrl + url, requestOptions);
     return handleResponse(response);
 }
 
-async function put(url: string, body:unknown) {
+async function put(url: string, body: unknown) {
     const requestOptions = {
         method: 'PUT',
         headers: await getHeaders(),
-        body : JSON.stringify(body)
+        body: JSON.stringify(body)
     }
     const response = await fetch(baseUrl + url, requestOptions);
     return handleResponse(response);
 }
 
-async function post(url: string, body:unknown) {
+async function post(url: string, body: unknown) {
     const requestOptions = {
         method: 'POST',
-     //   headers: await getHeaders(),
-        body : JSON.stringify(body)
+        headers: await getHeaders(),
+        body: JSON.stringify(body)
     }
     const response = await fetch(baseUrl + url, requestOptions);
     return handleResponse(response);
 }
 
-async function del(url: string ) {
+async function del(url: string) {
     const requestOptions = {
         method: 'DELETE',
         headers: await getHeaders()
@@ -40,15 +40,22 @@ async function del(url: string ) {
     return handleResponse(response);
 }
 
-async function handleResponse(response: Response)  {
+async function handleResponse(response: Response) {
     const text = await response.text();
-    const data = text && JSON.parse(text);
+    // const data = text && JSON.parse(text);
+    let data;
+    try {
+        data = JSON.parse(text);
+    } catch {
+        data = text;
+    }
+
     if (response.ok) {
-        return data || response.statusText
+        return data || response.statusText;
     } else {
         const error = {
             status: response.status,
-            message: response.statusText
+            message: typeof data === 'string' && data.length > 0 ? data : response.statusText
         }
         return { error };
     }
@@ -58,7 +65,7 @@ async function getHeaders(): Promise<Headers> {
     const session = await auth();
     const headers = new Headers();
     headers.set('content-type', 'application/json');
-    if(session){
+    if (session) {
         headers.set('Authorization', `Bearer ${session.accessToken}`);
     }
     return headers;

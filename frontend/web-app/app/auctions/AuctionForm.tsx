@@ -7,7 +7,7 @@ import Input from '../components/Input';
 import DateInput from '../components/DateInput';
 import { createAuction, updateAuction } from '../actions/auctionActions';
 import toast from 'react-hot-toast';
-import { Auction } from '../types';
+import { Auction } from '../../types';
 
 type Props = {
     auction?: Auction

@@ -2,7 +2,7 @@
 
 import { getData } from "../actions/auctionActions";
 import AppPagination from "../components/AppPagination";
-import { Auction, PageResult } from "../types";
+import { Auction } from "../../types";
 import AuctionCard from "./AuctionCard";
 import { useEffect, useState } from "react";
 import Filters from "./Filters";
@@ -10,18 +10,26 @@ import { useParamsStore } from "@/hooks/useParamsStore";
 import { useShallow } from "zustand/shallow";
 import qs from 'query-string'
 import EmptyFilter from "../components/EmptyFilter";
+import { useAuctionStore } from "@/hooks/useAuctionStore";
 
 export default function Listings() {
-    const [data, setData] = useState<PageResult<Auction>>();
+    const [loading, setLoading] = useState(true);
     const params = useParamsStore(useShallow((state) => ({
         pageNumber: state.pageNumber,
         pageSize: state.pageSize,
         searchTerm: state.searchTerm,
         orderBy: state.orderBy,
         filterBy: state.filterBy,
-        seller : state.seller,
-        winner : state.winner
+        seller: state.seller,
+        winner: state.winner
     })));
+
+    const data = useAuctionStore(useShallow(state => ({
+        auctions: state.auctions,
+        totalCount: state.totalCount,
+        pageCount: state.pageCount
+    })));
+    const setData = useAuctionStore(state => state.setData);
 
     const setParams = useParamsStore((state) => state.setParams);
     const url = qs.stringifyUrl({ url: '', query: params }, { skipEmptyString: true })
@@ -32,10 +40,11 @@ export default function Listings() {
     useEffect(() => {
         getData(url).then((data) => {
             setData(data);
+            setLoading(false);
         });
-    }, [url]);
+    }, [url, setData]);
 
-    if (!data) return <div>Loading...</div>;
+    if (loading) return <div>Loading...</div>;
 
     return (
         <>
@@ -44,7 +53,7 @@ export default function Listings() {
                 data.totalCount == 0 ? <EmptyFilter showReset /> : (
                     <>
                         <div className="grid grid-cols-4 gap-4">
-                            {data && data.results.map((auction: Auction) => (
+                            {data && data.auctions.map((auction: Auction) => (
                                 <AuctionCard key={auction.id} auction={auction} />
                             ))}
                         </div>
