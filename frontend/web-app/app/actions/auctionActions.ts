@@ -12,7 +12,7 @@ export async function updateAuctionTest() : Promise<{status : number, message : 
     const data ={
         mileage : Math.floor(Math.random() * 10000) + 1
     }
-    return await fetchWrapper.put('auctions/afbee524-5972-4075-8800-7d1f9d7b0a0c', data)
+    return await fetchWrapper.put('auctions/bbab4d5a-8565-48b1-9450-5ac2a5c4a654', data);
  
 }
 
