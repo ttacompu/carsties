@@ -149,6 +149,11 @@ services:
       rabbitmq:
         condition: service_healthy
 
+        
+volumes:
+  pgdata:
+  mongodata:
+
 
 
 
