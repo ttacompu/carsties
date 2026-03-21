@@ -22,8 +22,8 @@ const nextConfig: NextConfig = {
         hostname : 'images.pdimagearchive.org'
       }
     ]
-  }
-
+  },
+  output : "standalone"
 };
 
 export default withFlowbiteReact(nextConfig);
