@@ -1,3 +1,4 @@
+
 services:
   postgres:
     image: postgres:latest
@@ -102,11 +103,12 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
       - ASPNETCORE_URLS=http://+:80
-      - IssuerUri=https://id.carsties.local
-      - ClientApp=https://app.carsties.local
+      - IssuerUri=http://localhost:5001
+      - ClientApp=http://localhost:3000
       - ConnectionStrings__DefaultConnection=Server=postgres:5432;User Id=postgres;Password=postgrespw;Database=identity
-      - VIRTUAL_HOST=id.carsties.local
 
+    ports:
+      - "5001:80"
     depends_on:
       postgres:
         condition: service_healthy
@@ -118,9 +120,9 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
       - ASPNETCORE_URLS=http://+:80
-      - ClientApp=https://app.carsties.local
-      - VIRTUAL_HOST=api.carsties.local
-  
+
+    ports:
+      - "6001:80"
   bid-svc:
     image: ttacompu/bid-service:latest
     build:
@@ -166,24 +168,17 @@ services:
     volumes:
       - /var/lib/web/data
 
-    environment:
-      - AUTH_SECRET=6e7219329f8ad2a23ffc92218c7c9de2c7fe691f1c474eed507009dcac40788d
-      - API_URL=http://gateway-svc/
-      - ID_URL=https://id.carsties.local
-      - ID_URL_INTERNAL=http://identity-svc
-      - AUTH_URL=https://app.carsties.local
-      - AUTH_URL_INTERNAL=http://web-app:3000
-      - VIRTUAL_HOST=app.carsties.local
-      - VIRTUAL_PORT=3000
-  nginx-proxy:
-    image: nginxproxy/nginx-proxy
-    container_name: nginx-proxy
     ports:
-      - 80:80
-      - 443:443
-    volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-      - ./devcerts:/etc/nginx/certs
+      - 3000:3000
+
+    environment:
+      - AUTH_SECRET=6e7219329f8ad2a23ffc92218c7c9de2c7fe691f1c474eed507010dcac40788d
+      - API_URL=http://gateway-svc/
+      - ID_URL=http://localhost:5001
+      - ID_URL_INTERNAL=http://identity-svc
+      - AUTH_URL=http://localhost:3000
+      - AUTH_URL_INTERNAL=http://web-app:3000
+
 volumes:
   pgdata:
   mongodata:
