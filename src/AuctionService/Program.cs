@@ -5,6 +5,8 @@ using AuctionService.Services;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
+using Polly;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
@@ -50,15 +52,11 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.MapGrpcService<GrpcAuctionService>();
+var retryPolicy = Policy
+    .Handle<NpgsqlException>()
+    .WaitAndRetry(5, retryAttempt => TimeSpan.FromSeconds(5));
 
-try
-{
-    DbInitializer.InitDb(app);
-    
-}
-catch (Exception ex)
-{
-    Console.WriteLine($"Error during database initialization: {ex.Message}");
-}
+retryPolicy.ExecuteAndCapture( () => DbInitializer.InitDb(app));
+
 app.Run();
 
