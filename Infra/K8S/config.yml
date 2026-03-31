@@ -8,7 +8,7 @@ data:
   RabbitMq__Username: rabbit
   RabbitMq__Password: rabbitpw
   ConnectionStrings__DefaultConnection: Server=postgres-clusterip;User Id=postgres;Password=postgrespw;Database=auctions
-  IdentityServiceUrl: http://identity-svc
+  IdentityServiceUrl: http://identity-clusterip
   Kestrel__EndPoints__Grpc__Protocols: Http2
   Kestrel__EndPoints__Grpc__Url: http://+:7777
   Kestrel__EndPoints__WebApi__Protocols: Http1
@@ -60,7 +60,34 @@ kind: ConfigMap
 metadata:
   name: gateway-svc-config
 data:
+  ASPNETCORE_URLS: http://+:80
   ClientApp: https://app.carsties.local
   IdentityServiceUrl: http://identity-clusterip
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: identity-svc-config
+data:
+      ASPNETCORE_URLS: http://+:80
+      IssuerUri: https://id.carsties.local
+      ClientApp: https://app.carsties.local
+      ConnectionStrings__DefaultConnection: Server=postgres-clusterip;User Id=postgres;Password=postgrespw;Database=identity
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: webapp-svc-config
+data:
+      AUTH_SECRET: 6e7219329f8ad2a23ffc92218c7c9de2c7fe691f1c474eed507009dcac40788d
+      AUTH_URL: https://app.carsties.local
+      AUTH_URL_INTERNAL: http://webapp-clusterip:3000
+      API_URL: http://gateway-clusterip/
+      ID_URL: https://id.carsties.local
+      ID_URL_INTERNAL: http://identity-clusterip
+      NOTIFY_URL: https://api.carsties.local/notify
+     
+
+
 
 
