@@ -100,7 +100,7 @@ services:
       context: .
       dockerfile: src/IdentityService/Dockerfile
     environment:
-      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - IssuerUri=https://id.carsties.local
       - ClientApp=https://app.carsties.local
