@@ -14,8 +14,19 @@ jobs:
         service:
           - name: "ttacompu/auction-svc"
             path: 'src/AuctionService'
-            context: .
-            dockerfile: Dockerfile
+          - name: "ttacompu/search-svc"
+            path: 'src/SearchService'
+          - name: "ttacompu/bid-svc"
+            path: 'src/BiddingService'
+          - name: "ttacompu/identity-svc"
+            path: 'src/IdentityService'
+          - name: "ttacompu/gateway-svc"
+            path: 'src/GatewayService'
+          - name: "ttacompu/notify-svc"
+            path: 'src/NotificationService'
+          - name: "ttacompu/web-app"
+            path: 'frontend/web-app'
+        
 
     steps:
     - name: Checkout code
